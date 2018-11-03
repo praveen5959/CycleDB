@@ -1,0 +1,53 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+  <link rel="stylesheet" href="../static/login.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+</head>
+
+<body>
+  <div id="menu" class="ui fixed inverted menu">
+    <div class="ui container">
+      <a href="/login" class="header item">Cycle Database System</a>
+    </div>
+  </div>
+  <div class="ui middle aligned center aligned grid">
+    <div class="column">
+      <h2 class="ui image header">
+        <div class="content">
+          Admin Log In
+        </div>
+      </h2>
+      <form action="/login" method="POST" class="ui large form">
+        <div class="ui stacked secondary  segment">
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="user icon"></i>
+              <input type="text" name="username" placeholder="Username">
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password" placeholder="Password">
+            </div>
+          </div>
+          <div class="ui fluid large teal submit button">Login</div>
+        </div>
+
+        <div class="ui error message"></div>
+
+      </form>
+      <div class="ui message">
+
+        <a href="/login">Go to login page</a>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <!-- <script src="../static/login.js"></script> -->
+</body>
+
+</html>
