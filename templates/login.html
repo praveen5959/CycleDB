@@ -21,6 +21,7 @@
         </div>
       </h2>
       <form action="/login" method="POST" class="ui large form">
+
         <div class="ui stacked secondary  segment">
           <div class="field">
             <div class="ui left icon input">
@@ -34,12 +35,14 @@
               <input type="password" name="password" placeholder="Password">
             </div>
           </div>
-          <div class="ui fluid large teal submit button">Login</div>
+          <button class="ui fluid large teal button" type="submit">Login</button>
         </div>
 
-        <div class="ui error message"></div>
+        <div class="ui error message"></div> 
 
       </form>
+
+
 
       <div class="ui message">
         New to us?
@@ -52,7 +55,15 @@
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-  <!-- <script src="../static/login.js"></script> -->
+ 
 </body>
 
 </html>
+<form action="/login" method="POST">
+    <input type="username" name="username" placeholder="Username">
+    <input type="password" name="password" placeholder="Password">
+    <input type="submit" value="Log in">
+  </form>
+
+  <a href='/signup'>sign up</a><br>
+  <a href='/adminLogin'>Admin</a>

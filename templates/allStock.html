@@ -20,11 +20,11 @@
                 </div>
                 <i class="dropdown icon "></i>
                 <div class="menu">
-                    <a class="item" href="#">
+                    <a class="item" href="/myAccount">
                         <img class="ui avatar image " src="../static/avatar.png ">My Account
                     </a>
-                    <a class="item test ">
-                        <img class="ui avatar image " src="../static/orders.png ">Orders
+                    <a class="item test " >
+                        <img class="ui avatar image " src="../static/orders.png ">Enquiries
                     </a>
 
                     <a class="item" href="/logout">
@@ -43,53 +43,35 @@
                 <a class="item " href="/allStock?cat=kids">kids</a>
             </div>
         </div>
+        
+    
+
+      
 
         <div class="ui modal">
             <i class="close icon"></i>
             <div class="ui center aligned header">
-                Previous Orders
+                Previous  Enquiries
             </div>
             <div style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
                 <table class="ui celled table">
                     <thead>
                         <tr>
-                            <th>S No</th>
-                            <th>Order-ID</th>
                             <th>Order-Date</th>
                             <th>Product Name</th>
-                            <th>Qty</th>
                             <th>Category</th>
                             <th>Price</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for row in rows1 %}
                         <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
+                            <td>{{row[3]}}</td>
                         </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
 
                 </table>
@@ -99,28 +81,30 @@
 
 
     </div>
+    {% for row in rows %}
     <div style="margin-top:10%;">
         <div class="ui card">
             <div class="image">
-                <img src="../static/avatar.png">
+                <img src="../static/image/{{row[4]}}">
             </div>
             <div class="content">
-                <a class="header">Kristy</a>
+                <a class="header">{{row[0]}}</a>
                 <div class="meta">
-                    <span class="date">Joined in 2013</span>
+                    <span class="date">₹{{row[3]}}</span>
                 </div>
                 <div class="description">
-                    Kristy is an art director living in New York.
+                  <a href = "/enquiry?cycle={{row[0]}}&cat={{row[1]}}">Enquiry</a>
                 </div>
             </div>
-            <div class="extra content">
+            <!-- <div class="extra content">
                 <a>
                     <i class="user icon"></i>
                     22 Friends
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
+    {% endfor %}
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js "></script>
