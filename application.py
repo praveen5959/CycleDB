@@ -12,7 +12,8 @@ app.secret_key = '%jsdj!@'
 UPLOAD_FOLDER = 'static/image'
 ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+admin = "vikash"
+passWord = "vikash1234"
 
 def uniqueid():
     seed = random.randint(1,100000)
@@ -24,6 +25,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 @app.route('/')
 def main():
+    if 'admin' in session:
+        return redirect('/adminPage')
     if 'username' in session:
         return redirect(url_for('index'))
 
@@ -68,7 +71,7 @@ def signup():
         username = request.form['username']
         password = request.form['password']
         name = request.form['name']
-        email = request.form['email']
+        ph_no = request.form['ph_no']
         cur.execute('select user_id from customer')
         rows = cur.fetchall()
         for row in rows:
@@ -76,7 +79,7 @@ def signup():
                 error = 'Username already exist! Try other username'
                 return render_template('signup.html',error=error)
         session['username'] = username
-        cur.execute("insert into customer values(?,?,?,?)",(username,password,name,email))
+        cur.execute("insert into customer values(?,?,?,?)",(username,password,name,ph_no))
         con.commit()
         return redirect('/index')
     if 'username' in session:
@@ -85,14 +88,10 @@ def signup():
 
 @app.route('/index', methods=['GET'])
 def index():
+    if (session['username'] == admin):
+        return redirect('/adminPage')
 
     if 'username' in session:
-        # con = sql.connect('database.db')
-        # cur = con.cursor()
-        # cur.execute('select * from stock')
-        # rows1 = cur.fetchall()
-        # cur.execute('select cat_name from category')
-        # rows2 = cur.fetchall()
         return redirect('/allStock')
     return redirect('/login')
     
@@ -110,7 +109,7 @@ def myAccount():
         username = session['username']
         con = sql.connect('database.db')
         cur = con.cursor()
-        cur.execute("select user_id,name,email from customer where user_id = (?)",(username,))
+        cur.execute("select user_id,name,ph_no from customer where user_id = (?)",(username,))
         rows = cur.fetchone()
         #rows has user information, logged in
         return render_template('/myAccount.html',rows=rows) #update/change here
@@ -133,29 +132,33 @@ def myOrders():
 
 @app.route('/addStock',methods = ['GET','POST'])
 def addStock():
-    con = sql.connect('database.db')
-    duplicate = False
-    msg = None
-    if(request.method == 'POST'):
-        cycle_name = request.form['cycle_name']
-        cat_id = request.form['cat_id']
-        cost_price = request.form['cost_price']
-        quantity = request.form['quantity']
-        image = request.files['image']
-        if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        imagename = filename
-        duplicate = duplicate_stock(cycle_name)
-        if(duplicate == True):
-            msg = 'Cycle already in stock'
-            return render_template('addStock.html',msg = msg)
-        cur = con.cursor()
-        cur.execute("insert into stock(cycle_name,cat_id,cost_price,cycle_image,quantity) values(?,?,?,?,?)",(cycle_name,cat_id,cost_price,imagename,quantity))
-        con.commit()
-        msg = "Stock added successfully"
-        return render_template('addStock.html',msg=msg)
-    return render_template('addStock.html')
+    if (session['username'] == admin):
+        con = sql.connect('database.db')
+        duplicate = False
+        msg = None
+        if(request.method == 'POST'):
+            cycle_name = request.form['cycle_name']
+            cat_id = request.form['cat_id']
+            cost_price = request.form['cost_price']
+            quantity = request.form['quantity']
+            image = request.files['image']
+            description = request.form['description']
+            if image and allowed_file(image.filename):
+                filename = secure_filename(image.filename)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            imagename = filename
+            duplicate = duplicate_stock(cycle_name)
+            if(duplicate == True):
+                msg = 'Cycle already in stock'
+                return render_template('addStock.html',msg = msg)
+            cur = con.cursor()
+            cur.execute("insert into stock(cycle_name,cat_id,cost_price,cycle_image,quantity,description) values(?,?,?,?,?,?)",(cycle_name,cat_id,cost_price,imagename,quantity,description))
+            con.commit()
+            msg = "Stock added successfully"
+            return render_template('addStock.html',msg=msg)
+        return render_template('addStock.html')
+    return redirect('/index')
+    
 def duplicate_stock(cycle_name):
 
     con = sql.connect('database.db')
@@ -183,13 +186,22 @@ def adminLogin():
         username = request.form['username']
         password = request.form['password']
 
-        if (username == 'vikash' and password == 'vikash1234'):
-            return redirect('/addStock')
+        if (username == admin and password == passWord):
+            session['username'] = username
+            return redirect('/adminPage')
         else:
             msg = "Invalid credentials! Try again!"
             return render_template('adminLogin.html',msg=msg)
     return render_template('adminLogin.html')
 
+
+# @app.route('/adminPage', methods=['GET','POST'])
+# def stock():
+#     con = sql.connect('database.db')
+#     cur = con.cursor()  
+#     cur.execute("select * from stock")
+#     rows = cur.fetchall()
+#     return render_template('/adminPage.html', rows=rows)
 # ------------------PAGES TO BE UPDATED--------------------------
 # @app.route('/suppliers')
 # def suppliers():
@@ -257,6 +269,21 @@ def enquiry():
         flash('Enquiry places successfully!')
         return redirect(url_for('allStock', cat=cat_name))
         
+    return redirect('/index')
+
+@app.route('/adminPage')
+def adminPage():
+    if (session['username'] == admin):
+        con = sql.connect('database.db')
+        cur = con.cursor()  
+        cur.execute("select s.cycle_name,c.cat_name,s.cost_price,s.sell_price,s.quantity,sup.s_name from stock s, suppliers sup, supplies ss, category c where s.cat_id=c.cat_id and s.cycle_name=ss.cycle_name and ss.s_id=sup.s_id")
+        # cur.execute('select * from stock')
+        rows = cur.fetchall()
+        cur.execute("select * from suppliers")
+        rows1=cur.fetchall()
+        cur.execute("select e.user_id, e.cycle_name, c.cat_name, e.enq_date from enquiry e, category c  where e.cat_id=c.cat_id")
+        rows2=cur.fetchall()
+        return render_template('adminPage.html',rows=rows, rows1=rows1, rows2=rows2)        
     return redirect('/index')
 
 if __name__ == "__main__":

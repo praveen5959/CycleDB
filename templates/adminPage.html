@@ -1,0 +1,170 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" href="../static/addStock.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+</head>
+
+<body>
+  <div class="ui top fixed inverted menu" style="display: block;">
+      <div class="ui container" style="font-size: 1.1rem;">
+          <a href="/adminPage" class="header item">Cycle Database System</a>
+          <a href="/logout" style="margin-left: 73%;">
+          <button class="ui red basic large button" style="margin-top: 2px; margin-bottom:2px; ">Log Out</button>
+        </a>
+
+      </div>
+      <div class="ui container ">
+          <div class="ui three item menu ">
+              <a class="active item " id="stock" >Stocks</a>
+              <a class="item " id="request">Requests</a>
+              <!-- <a class="item ">Unisex</a> -->
+              <a class="item " id="supplier">Suppliers</a>
+          </div>
+      </div>
+    </div>
+    <!-- BODY -->
+    <div id="body">
+    <div class="ui container">
+     <a href="/addStock">
+      <button class="ui right floated green large button" type="submit">Add Stock</button>
+    </a>
+    </div>
+    </div>
+    <!-- STOCKS -->
+    <div id="table" style="margin-left: 10px; margin-right: 10px; padding-top: 75px;">
+            <h6 class="ui small header">Stocks</h6>
+        <table class="ui selectable celled table">
+            <thead>
+                <tr>
+                    <th>Cycle Name</th>
+                    <th>Category</th>
+                    <th>Cost Price</th>
+                    <th>Sell Price</th>
+                    <th>Supplier</th>
+                    <th>Qty</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                    {% for row in rows %}                    
+                    <tr class='clickable-row' data-href='/addStock' style="cursor: pointer;">
+                    
+                        <td>{{row[0]}}</td>
+                        <td>{{row[1]}}</td>
+                        <td>{{row[2]}}</td>
+                        <td>{{row[3]}}</td>
+                        <td>{{row[5]}}</td>
+                        <td>{{row[4]}}</td>
+                    
+                    </tr>                
+                    {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+  <!-- REQUESTS -->
+  <div id="requests" style="display: none;">
+    <div id="table" style="margin-left: 10px; margin-right: 10px; padding-top: 75px;">
+        <h6 class="ui small header">Requests</h6>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Cycle Name</th>
+                <th>Category</th>
+                <th>Date</th>       
+            </tr>
+        </thead>
+        <tbody>
+                {% for row in rows2 %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>        
+                </tr>
+                {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+  </div>
+
+  <!-- suppliers -->
+  <div id="suppliers" style="display: none;">
+    <div id="table" style="margin-left: 10px; margin-right: 10px; padding-top: 75px;">
+        <h6 class="ui small header">Supplier</h6>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>Supplier ID</th>
+                <th>Supplier Name</th>
+                <th>City</th>
+                <th>Phone</th>
+                <th>E-mail</th>
+                
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+                {% for row in rows1 %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}}</td>
+                    <td>{{row[2]}}</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                
+                </tr>
+                {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js "></script>
+    <script>
+        $(".ui.dropdown").dropdown();
+        document.getElementById('stock').onclick = function() {stocks() };
+        document.getElementById('request').onclick=function() {requests()};
+        document.getElementById('supplier').onclick=function() {suppliers()};
+        $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+        function stocks() {
+            var x = document.getElementById("table");
+            var y = document.getElementById("requests");
+            var z= document.getElementById("suppliers");
+            x.style.display = "block";
+            y.style.display="none";
+            z.style.display="none";
+        }
+        function requests() {
+            var x = document.getElementById("table");
+            var y =document.getElementById("requests");
+            var z= document.getElementById("suppliers");
+            x.style.display = "none";
+            y.style.display="block";
+            z.style.display="none";
+        }
+        function suppliers(){
+            var x = document.getElementById("table");
+            var y =document.getElementById("requests");
+            var z= document.getElementById("suppliers");
+            x.style.display = "none";
+            y.style.display="none";
+            z.style.display="block";
+        }
+    </script>
+  </body>
+  </html>
+
+

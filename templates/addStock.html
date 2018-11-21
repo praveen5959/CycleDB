@@ -2,44 +2,69 @@
 
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
-    <link rel="stylesheet" href="../static/addStock.css">
+    <link rel="stylesheet" href="../static/dummy.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 </head>
 
 <body>
-  <div class="ui top fixed inverted menu" style="display: block;">
-      <div class="ui container" style="font-size: 1.1rem;">
-          <a href="/login" class="header item">Cycle Database System</a>
-          <a href="/login" style="margin-left: 73%;">
-          <button class="ui red basic large button" style="margin-top: 2px; margin-bottom:2px; ">Log Out</button>
-        </a>
-
+    <div id="menu" class="ui fixed inverted menu">
+        <div class="ui container">
+          <a href="/adminPage" class="header item">Cycle Database System</a>
+        </div>
       </div>
-      <div class="ui container ">
-          <div class="ui three item menu ">
-              <a class="active item " href="/allStock?cat=boys">Stocks</a>
-              <a class="item " href="/allStock?cat=girls">Requests</a>
-              <!-- <a class="item ">Unisex</a> -->
-              <a class="item " href="/allStock?cat=kids">Suppliers</a>
+  <div id="body">
+  <div class="ui container">
+    <div class="ui form">
+      <form action="/addStock" method="POST" class="ui large form" enctype=multipart/form-data>
+      <div class="eight wide field">
+        <div class="field">
+          <label for="cycle_name">Cycle Name</label>
+          <input type="text" name="cycle_name" placeholder="Cycle Name">
+        </div>
+        <div class="field">
+          <label for="cat_id">Category ID</label>
+          <input type="text" name="cat_id" placeholder="Category ID">
+        </div>
+        <div class="field">
+          <label for="cost_price">Cost Price</label>
+            <input type="number" name="cost_price" placeholder="Cost Price">
+        </div>
+        <div class="field">
+          <label for="">Upload cycle image</label>  
+          <input type="file" name="image" placeholder="browse">
+        </div>
+        <div class="field">
+          <label for="quantity">Add quantity</label>
+          <input type="number" name="quantity" placeholder="Quantity">
+        </div>
+        <div class="field">
+            <label for="description">More description</label>
+            <input type="text" name="description" placeholder="Description">
           </div>
+        <a href="/adminPage">
+          <button class="ui button green">Back</button>
+        </a>
+        <button class="ui button green submit">Submit</button>
       </div>
-    </div>
-    <!-- BODY -->
-    <div id="body">
+      </form>
 
-    
-    <div class="ui container">
-     <a href="/dummy">
-      <button class="ui right floated green large button" type="submit">Add Stock</button>
-    </a>
     </div>
   </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js "></script>
-    <script>
-        $(".ui.dropdown").dropdown();
-    </script>
-  </body>
-  </html>
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js "></script>
+</body>
+</html>
 
 
+
+<!-- <form action="/addStock" method="POST">
+    <input type="text" name="cycle_name" placeholder="Cycle Name"><br>
+    <input type="text" name="cat_id" placeholder="Category id"><br>
+    <input type="number" name="cost_price" placeholder="Cost Price"><br>
+    Upload cycle image<input type="file" name="image" placeholder="browse"><br>
+    <input type="number" name="quantity" placeholder="Quantity"><br>
+    <input type="submit" value="Add Stock">
+  </form>
+
+  <a href='/login'>logout</a> -->
